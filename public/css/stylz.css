@@ -1,0 +1,26 @@
+#sidebar {
+    position: fixed;
+    height: 80%;
+    transition: 0.5s;
+}
+
+#sidebar a {
+    overflow: hidden;
+    padding: 15px 8px 15px 32px;
+    text-decoration: none;
+    font-size: 20px;
+    display: block;
+    transition: 0.3s;
+}
+#sidebar a:hover {
+ color: rgb(53, 5, 5);
+ background-color: antiquewhite;
+}
+svg {
+    width: 250px;
+    height: 250px
+   }
+a {
+    text-decoration: none;
+    color: black;
+}
