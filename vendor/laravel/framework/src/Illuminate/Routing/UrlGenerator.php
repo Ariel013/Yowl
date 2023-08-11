@@ -484,7 +484,9 @@ class UrlGenerator implements UrlGeneratorContract
                     ? $value->{$route->bindingFieldFor($key)}
                     : $value;
 
-            return $value instanceof BackedEnum ? $value->value : $value;
+            return function_exists('enum_exists') && $value instanceof BackedEnum
+                ? $value->value
+                : $value;
         })->all();
 
         return $this->routeUrl()->to(
@@ -525,9 +527,9 @@ class UrlGenerator implements UrlGeneratorContract
 
         if ($this->rootNamespace && ! str_starts_with($action, '\\')) {
             return $this->rootNamespace.'\\'.$action;
+        } else {
+            return trim($action, '\\');
         }
-
-        return trim($action, '\\');
     }
 
     /**

@@ -90,7 +90,7 @@ class HandleExceptions
 
         try {
             $logger = static::$app->make(LogManager::class);
-        } catch (Exception) {
+        } catch (Exception $e) {
             return;
         }
 
@@ -180,16 +180,12 @@ class HandleExceptions
 
         try {
             $this->getExceptionHandler()->report($e);
-        } catch (Exception) {
-            $exceptionHandlerFailed = true;
+        } catch (Exception $e) {
+            //
         }
 
         if (static::$app->runningInConsole()) {
             $this->renderForConsole($e);
-
-            if ($exceptionHandlerFailed ?? false) {
-                exit(1);
-            }
         } else {
             $this->renderHttpResponse($e);
         }

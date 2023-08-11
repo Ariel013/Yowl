@@ -43,6 +43,13 @@ class MonitorCommand extends Command
     protected $events;
 
     /**
+     * The table headers for the command.
+     *
+     * @var string[]
+     */
+    protected $headers = ['Connection', 'Queue', 'Size', 'Status'];
+
+    /**
      * Create a new queue monitor command.
      *
      * @param  \Illuminate\Contracts\Queue\Factory  $manager
@@ -109,10 +116,9 @@ class MonitorCommand extends Command
         $this->components->twoColumnDetail('<fg=gray>Queue name</>', '<fg=gray>Size / Status</>');
 
         $queues->each(function ($queue) {
-            $name = '['.$queue['connection'].'] '.$queue['queue'];
             $status = '['.$queue['size'].'] '.$queue['status'];
 
-            $this->components->twoColumnDetail($name, $status);
+            $this->components->twoColumnDetail($queue['queue'], $status);
         });
 
         $this->newLine();
