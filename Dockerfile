@@ -1,22 +1,25 @@
-FROM php:8.0-fpm-alpine AS builder
+FROM php:8.2-fpm-alpine
 
 RUN apk add --no-cache \
-    libzip-dev \
-    zip
+    libzip-dev zip unzip curl \
+    nodejs npm
 
-RUN docker-php-ext-configure zip \
-    && docker-php-ext-install zip pdo pdo_mysql
+RUN docker-php-ext-install pdo pdo_mysql zip
 
-COPY . /var/www/html
-
-WORKDIR /var/www/html
-
-RUN composer install
-
-FROM php:8.0-fpm-alpine
-
-COPY --from=builder /var/www/html /var/www/html
+COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
 WORKDIR /var/www/html
+
+COPY composer.json composer.lock ./
+RUN composer install --no-scripts --no-autoloader --no-dev --prefer-dist
+
+COPY package.json package-lock.json* ./
+RUN npm ci
+
+COPY . .
+
+RUN composer dump-autoload --optimize \
+    && npm run build \
+    && chown -R www-data:www-data storage bootstrap/cache
 
 CMD ["php-fpm"]

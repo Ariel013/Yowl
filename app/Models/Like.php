@@ -8,25 +8,20 @@ use Illuminate\Database\Eloquent\Model;
 class Like extends Model
 {
     use HasFactory;
+
     protected $fillable = [
-        'id_comment', 'id_comment_user', 'like'
+        'id_user',
+        'id_commentaire',
+        'like',
     ];
 
-    // Define relationships here if applicable
-    
-    public function users()
+    public function user()
     {
-        return $this->belongsTo(Users::class, 'id_user');
+        return $this->belongsTo(User::class, 'id_user');
     }
 
-    public function commentaires()
+    public function commentaire()
     {
-        return $this->belongsTo(commentaire::class, 'id_commentaire');
+        return $this->belongsTo(Commentaire::class, 'id_commentaire');
     }
-
-    public function comments()
-    {
-        return $this->belongsTo(Comment::class, 'id_comment');
-    }
-    
 }

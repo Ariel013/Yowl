@@ -1,112 +1,176 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
-
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
-
-## About Laravel
-
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
-
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
-
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
-
-## Learning Laravel
-
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
-
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
-
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
-
-## Laravel Sponsors
-
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
-
-### Premium Partners
-
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
-
-## Contributing
-
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
-
-
 # Yowl
 
-Yowl is a site of comment where user can comment all and everything on the web.
-this is make with laravel.
-## Installation
+Yowl est une application web qui permet aux utilisateurs de commenter n'importe quel contenu trouvé sur Internet. Les commentaires sont partagés par toute la communauté Yowl, décentralisant ainsi les discussions des réseaux sociaux.
 
-Install Yowl with composer
+## Stack technique
+
+- **Backend** : Laravel 10 (PHP 8.2)
+- **Base de données** : MySQL 8.0
+- **Authentification** : Session custom + Laravel Sanctum (API)
+- **Frontend** : Blade + Bootstrap 5 + Vite
+- **Conteneurisation** : Docker (app PHP-FPM + nginx + MySQL)
+
+---
+
+## Démarrage rapide avec Docker (recommandé)
+
+### Prérequis Docker
+
+- Docker >= 24
+- Docker Compose >= 2.20
+
+### Installation Docker
 
 ```bash
-git clone https://github.com/EpitechCodingAcademyPromo2023/C-DEV-160-COT-1-2-yowl-alfredito.koudebi.git
-Go to the project directory :
-bash
-Copy code
-cd your-project-name
-Install dependencies with Composer :
-bash
-Copy code
-compose install
-Copy the .env.example file to .env and configure your database parameters:
-bash
-Copy code
+# 1. Cloner le dépôt
+git clone <url-du-repo> && cd Yowl
+
+# 2. Copier et configurer l'environnement
 cp .env.example .env
-Run migrations to create database tables:
-bash
-Copy code
+
+# 3. Construire et démarrer les conteneurs
+docker compose up -d --build
+
+# 4. Générer la clé applicative
+docker compose exec app php artisan key:generate
+
+# 5. Lancer les migrations
+docker compose exec app php artisan migrate
+
+# 6. (Optionnel) Peupler avec des données de test
+docker compose exec app php artisan db:seed
+```
+
+L'application est disponible sur <http://localhost:8080>.
+
+### Commandes utiles
+
+```bash
+# Arrêter les conteneurs
+docker compose down
+
+# Voir les logs
+docker compose logs -f
+
+# Accéder au shell de l'app
+docker compose exec app sh
+
+# Lancer les tests
+docker compose exec app php artisan test
+
+# Reconstruire après modification du Dockerfile
+docker compose up -d --build
+```
+
+### Troubleshooting Docker
+
+| Problème | Solution |
+| -------- | -------- |
+| Port 8080 déjà utilisé | Modifier le port dans `docker-compose.yml` (`"XXXX:80"`) |
+| Erreur de connexion DB | Attendre que le healthcheck MySQL passe (`docker compose ps`) |
+| Permissions storage | `docker compose exec app chmod -R 777 storage bootstrap/cache` |
+| Assets non compilés | `docker compose exec app npm run build` |
+
+---
+
+## Installation locale (sans Docker)
+
+### Prérequis locaux
+
+- PHP >= 8.2 avec extensions : `pdo_mysql`, `zip`, `dom`
+- Composer >= 2
+- Node.js >= 18 + npm
+- MySQL 8.0
+
+### Installation locale
+
+```bash
+# 1. Cloner et installer les dépendances PHP
+git clone <url-du-repo> && cd Yowl
+composer install
+
+# 2. Installer les dépendances JS et compiler les assets
+npm install && npm run build
+
+# 3. Configurer l'environnement
+cp .env.example .env
+# Editer .env : DB_HOST=127.0.0.1, DB_DATABASE, DB_USERNAME, DB_PASSWORD
+
+# 4. Générer la clé
+php artisan key:generate
+
+# 5. Lancer les migrations
 php artisan migrate
-Run the development server :
-bash
-Copy code
+
+# 6. Démarrer le serveur de développement
 php artisan serve
-The application will be accessible at http://localhost:8000.
+```
 
-## Demo
+L'application est disponible sur <http://localhost:8000>.
 
-Visit the home page to see the comments and likes associated with each link.
-Login or register to comment and like.
-To edit or delete your comments, click on the "Edit" or "Delete" button.
-To like or unlike a comment, click on the "Like" icon.
-Main features
-User registration and login.
-Manage comments linked to specific URLs.
-Like system for comments.
-Users can edit and delete comments.
-Contribute
+Pour le développement frontend en hot-reload :
+
+```bash
+npm run dev
+```
+
+---
+
+## Variables d'environnement clés
+
+| Variable | Description | Valeur par défaut (Docker) |
+| -------- | ----------- | -------------------------- |
+| `APP_KEY` | Clé de chiffrement Laravel | généré via `artisan key:generate` |
+| `DB_HOST` | Hôte MySQL | `db` (Docker) / `127.0.0.1` (local) |
+| `DB_DATABASE` | Nom de la base | `yowl` |
+| `DB_USERNAME` | Utilisateur MySQL | `yowl` |
+| `DB_PASSWORD` | Mot de passe MySQL | `secret` |
+| `MAIL_MAILER` | Driver mail | `smtp` |
+| `MAIL_FROM_ADDRESS` | Adresse d'expédition | `no-reply@yowl.local` |
+
+---
+
+## Fonctionnalités
+
+- Inscription / connexion avec confirmation par email
+- Commenter n'importe quelle URL
+- Répondre à un commentaire
+- Liker / unliker un commentaire
+- Voir tous les commentaires d'un utilisateur
+- Modifier / supprimer ses propres commentaires
+- Panel d'administration (gestion des users et commentaires)
+- API REST (Sanctum)
+
+---
+
+## Tests
+
+```bash
+php artisan test
+```
+
+Les tests utilisent une base de données dédiée configurée dans `phpunit.xml`.
+
+---
+
+## CI/CD
+
+Le pipeline GitHub Actions (`.github/workflows/ci.yml`) exécute automatiquement :
+
+1. **Tests PHP** sur MySQL 8.0 (à chaque push sur `main` et `develop`, et PR vers `main`)
+2. **Build Docker** pour vérifier que l'image se construit correctement
+
+---
+
+## Architecture Docker
+
+```text
+┌─────────────┐     ┌─────────────┐     ┌─────────────┐
+│    nginx    │────▶│  app (fpm)  │────▶│   MySQL 8   │
+│  port 8080  │     │  port 9000  │     │  port 3306  │
+└─────────────┘     └─────────────┘     └─────────────┘
+```
+
+- **nginx** : sert les fichiers statiques, proxifie PHP vers `app:9000`
+- **app** : PHP-FPM 8.2, Laravel, Composer, Node (build assets)
+- **db** : MySQL 8.0 avec volume persistant `db_data`
